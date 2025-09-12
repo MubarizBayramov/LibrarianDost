@@ -1,0 +1,53 @@
+package Book.Book.LibrarianDost.controller;
+
+import Book.Book.LibrarianDost.entity.Book;
+import Book.Book.LibrarianDost.request.BookAddRequest;
+import Book.Book.LibrarianDost.request.BookUpdateRequest;
+import Book.Book.LibrarianDost.response.BookAddResponse;
+import Book.Book.LibrarianDost.service.SellerService;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/sellers")
+public class SellerController {
+
+    private final SellerService sellerService;
+
+    public SellerController(SellerService sellerService) {
+        this.sellerService = sellerService;
+    }
+
+
+    @GetMapping("/{sellerId}/books")
+    public List<Book> getSellerBooks(@PathVariable Long sellerId) {
+        return sellerService.getSellerBooks(sellerId);
+    }
+
+
+    @PostMapping("/{sellerId}/books")
+    public BookAddResponse addBook(@PathVariable Long sellerId,
+                                   @RequestBody @Valid BookAddRequest request) {
+        Book savedBook = sellerService.addBookToSeller(sellerId, request);
+        return new BookAddResponse(savedBook.getName(), savedBook.getAuthor(), savedBook.getPrice(), savedBook.getStock());
+    }
+
+
+    @PutMapping("/{sellerId}/books/{bookId}")
+    public Book updateBook(@PathVariable Long sellerId,
+                           @PathVariable Long bookId,
+                           @RequestBody @Valid BookUpdateRequest updatedBook) {
+        return sellerService.updateBook(sellerId, bookId, updatedBook);
+    }
+
+
+    @DeleteMapping("/{sellerId}/books/{bookId}")
+    public String deleteBook(@PathVariable Long sellerId,
+                             @PathVariable Long bookId,
+                             @RequestParam(required = false) String confirm) {
+        sellerService.deleteBook(sellerId, bookId, confirm);
+        return "Book deleted successfully!";
+    }
+}
