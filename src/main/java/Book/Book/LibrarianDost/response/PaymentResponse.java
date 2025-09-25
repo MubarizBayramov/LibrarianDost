@@ -1,15 +1,16 @@
 package Book.Book.LibrarianDost.response;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import lombok.Builder;
-import lombok.Data;
 
-@Data
-@Builder
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PaymentResponse {
-    private Long id;
-    private Double price;
-    private String clientCode;
     private String transactionCode;
-
-
+    private String status;
+    private String message;
 }

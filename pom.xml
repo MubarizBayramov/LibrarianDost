@@ -103,6 +103,19 @@
 			<version>2.17.2</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.payment</groupId>
+			<artifactId>payments</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-activemq</artifactId>
+		</dependency>
+
+
+
 	</dependencies>
 
 	<build>

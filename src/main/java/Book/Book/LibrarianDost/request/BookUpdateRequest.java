@@ -13,8 +13,8 @@ public class BookUpdateRequest {
     @NotBlank(message = "Author is required")
     private String author;
 
-    @NotNull(message = "Price is required")
-    private Double price;
+    @NotNull(message = "amount is required")
+    private Double amount;
 
     private Integer stock;
 }

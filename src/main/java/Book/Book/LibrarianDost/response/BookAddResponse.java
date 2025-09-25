@@ -1,15 +1,14 @@
 package Book.Book.LibrarianDost.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookAddResponse {
     private String name;
     private String author;
-    private double price;
+    private double amount;
     private int stock;
 }

@@ -1,57 +1,31 @@
 package Book.Book.LibrarianDost.request;
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PaymentRequest {
 
-    private Double price;
-    private String client;      // hansı layihədən gəlir
-    private String buyerId;     // alıcı ID
-    private String sellerId;    // satıcı ID
+    @NotNull(message = "Amount cannot be null")
+    @DecimalMin(value = "0.01", message = "Amount must be greater than zero")
+    private Double amount;
 
-    // Default constructor
-    public PaymentRequest() {
-    }
+    @NotBlank(message = "Client name is required")
+    private String client; // Hangi layihədən gəlir, məsələn: LIBRARIAN
 
-    // Parametrli constructor
-    public PaymentRequest(Double price, String client, String buyerId, String sellerId) {
-        this.price = price;
-        this.client = client;
-        this.buyerId = buyerId;
-        this.sellerId = sellerId;
-    }
+    @NotBlank(message = "Operation type is required")
+    private String operationType; // PAYMENT / REFUND
 
-    // Getters və Setters
-    public Double getPrice() {
-        return price;
-    }
+    @NotBlank(message = "Buyer ID is required")
+    private String buyerId;
 
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public String getClient() {
-        return client;
-    }
-
-    public void setClient(String client) {
-        this.client = client;
-    }
-
-    public String getBuyerId() {
-        return buyerId;
-    }
-
-    public void setBuyerId(String buyerId) {
-        this.buyerId = buyerId;
-    }
-
-    public String getSellerId() {
-        return sellerId;
-    }
-
-    public void setSellerId(String sellerId) {
-        this.sellerId = sellerId;
-    }
+    private String sellerId; // Optional, əgər satıcı varsa
 }
-

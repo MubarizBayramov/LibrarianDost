@@ -31,7 +31,7 @@ public class SellerController {
     public BookAddResponse addBook(@PathVariable Long sellerId,
                                    @RequestBody @Valid BookAddRequest request) {
         Book savedBook = sellerService.addBookToSeller(sellerId, request);
-        return new BookAddResponse(savedBook.getName(), savedBook.getAuthor(), savedBook.getPrice(), savedBook.getStock());
+        return new BookAddResponse(savedBook.getName(), savedBook.getAuthor(), savedBook.getAmount(), savedBook.getStock());
     }
 
 
@@ -42,12 +42,13 @@ public class SellerController {
         return sellerService.updateBook(sellerId, bookId, updatedBook);
     }
 
-
     @DeleteMapping("/{sellerId}/books/{bookId}")
     public String deleteBook(@PathVariable Long sellerId,
                              @PathVariable Long bookId,
+                             @RequestParam(required = false) Integer quantity,
                              @RequestParam(required = false) String confirm) {
-        sellerService.deleteBook(sellerId, bookId, confirm);
+        sellerService.deleteBook(sellerId, bookId, quantity, confirm);
         return "Book deleted successfully!";
     }
+
 }

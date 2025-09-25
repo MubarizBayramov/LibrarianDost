@@ -11,7 +11,6 @@ public class BookResponse {
     private Long id;
     private String name;
     private String author;
-    private Double price;
+    private Double amount;
     private Long sellerId;
-
 }

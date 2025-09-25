@@ -11,9 +11,6 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-
-
-
 public class Buyer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

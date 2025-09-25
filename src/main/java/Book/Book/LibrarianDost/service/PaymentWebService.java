@@ -1,0 +1,35 @@
+package Book.Book.LibrarianDost.service;
+
+import Book.Book.LibrarianDost.request.PaymentRequest;
+import Book.Book.LibrarianDost.request.RefundRequest;
+import Book.Book.LibrarianDost.response.PaymentResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+@Service
+@RequiredArgsConstructor
+public class PaymentWebService implements PaymentService{
+
+    private final RestTemplate webClient;
+
+    @Override
+    public PaymentResponse pay(PaymentRequest request) {
+        ResponseEntity<PaymentResponse> response = webClient.postForEntity(
+                "http://localhost:8880/payments",
+                request,
+                PaymentResponse.class
+        );
+        return response.getBody();
+    }
+
+    public PaymentResponse refundBook(String transactionCode, double amount) {
+        RefundRequest refundRequest = new RefundRequest(amount);
+        ResponseEntity<PaymentResponse> response = webClient.postForEntity(
+                "http://localhost:8880/payments/refund/" + transactionCode,
+                refundRequest,
+                PaymentResponse.class
+        );
+        return response.getBody();
+    }
+}
