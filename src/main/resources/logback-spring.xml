@@ -16,7 +16,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>LibrarianDost/logs/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>1MB</maxFileSize>
-            <maxHistory>7</maxHistory>
+            <maxHistory>3</maxHistory>
             <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
 
