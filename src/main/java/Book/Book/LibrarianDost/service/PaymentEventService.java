@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
-
 @Primary
 @Service
 @RequiredArgsConstructor
@@ -18,15 +17,12 @@ public class PaymentEventService implements PaymentService {
     @Override
     public PaymentResponse pay(PaymentRequest request) {
         jmsTemplate.convertAndSend("payment-queue", request);
-        // Burada cavab sinxron alınmır, cavab mexanizmi üçün ResponseQueue əlavə etmək olar
         return new PaymentResponse("SENT", "OK", "Payment request sent via MQ");
-
     }
 
     @Override
     public PaymentResponse refundBook(String transactionCode, double amount) {
         jmsTemplate.convertAndSend("refund-queue", new RefundMessage(transactionCode, amount));
-        return new PaymentResponse("SENT", "OK", "Payment request sent via MQ");
-
+        return new PaymentResponse("REFUNDED", "OK", "Payment request sent via MQ");
     }
 }

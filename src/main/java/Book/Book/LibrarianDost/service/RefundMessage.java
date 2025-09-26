@@ -1,13 +1,22 @@
 package Book.Book.LibrarianDost.service;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.io.Serializable;
+
+@Setter
+@Getter
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class RefundMessage {
+
+public class RefundMessage implements Serializable {
     private String transactionCode;
-    private Double amount;
+    private double amount;
+
+    public RefundMessage() {}
+
+    public RefundMessage(String transactionCode, double amount) {
+        this.transactionCode = transactionCode;
+        this.amount = amount;
+    }
+
 }

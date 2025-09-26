@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import java.io.Serializable;
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RefundRequest {
 
-    private Double refundAmount;
+
+public class RefundRequest implements Serializable {
+        private double amount;
+
 }

@@ -22,7 +22,7 @@ public class BuyerTransactionService {
     private final BookRepository bookRepository;
     private final BuyerBookRepository buyerBookRepository;
     private final SellerRepository sellerRepository;
-    private final PaymentWebService paymentWebService;
+    private final PaymentService paymentService;
 
     public BookBuyResponse buyBook(Long buyerId, Long bookId, int quantity) {
         Buyer buyer = buyerRepository.findById(buyerId)
@@ -41,7 +41,7 @@ public class BuyerTransactionService {
         paymentRequest.setBuyerId(buyer.getId().toString());
         paymentRequest.setSellerId(book.getSeller() != null ? book.getSeller().getId().toString() : null);
 
-        var paymentResponse = paymentWebService.pay(paymentRequest);
+        var paymentResponse = paymentService.pay(paymentRequest); // <-- EventService çağırılır
         if (paymentResponse == null || paymentResponse.getTransactionCode() == null)
             throw new BookException("Payment failed!");
 
@@ -90,7 +90,7 @@ public class BuyerTransactionService {
 
         double totalAmount = book.getAmount() * quantity;
 
-        var refundResponse = paymentWebService.refundBook(buyerBook.getTransactionCode(), totalAmount);
+        var refundResponse = paymentService.refundBook(buyerBook.getTransactionCode(), totalAmount); // <-- EventService
         if (refundResponse == null || refundResponse.getTransactionCode() == null)
             throw new BookException("Refund failed!");
 

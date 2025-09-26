@@ -7,9 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
 @Service
 @RequiredArgsConstructor
-public class PaymentWebService implements PaymentService{
+public class PaymentWebService implements PaymentService {
 
     private final RestTemplate webClient;
 
@@ -23,6 +24,7 @@ public class PaymentWebService implements PaymentService{
         return response.getBody();
     }
 
+    @Override
     public PaymentResponse refundBook(String transactionCode, double amount) {
         RefundRequest refundRequest = new RefundRequest(amount);
         ResponseEntity<PaymentResponse> response = webClient.postForEntity(

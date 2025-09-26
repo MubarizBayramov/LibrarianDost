@@ -1,4 +1,4 @@
-package com.librarian.config;
+package Book.Book.LibrarianDost.config;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.context.annotation.Bean;
