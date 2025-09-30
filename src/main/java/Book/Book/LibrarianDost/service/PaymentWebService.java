@@ -1,8 +1,8 @@
 package Book.Book.LibrarianDost.service;
 
-import Book.Book.LibrarianDost.request.PaymentRequest;
 import Book.Book.LibrarianDost.request.RefundRequest;
-import Book.Book.LibrarianDost.response.PaymentResponse;
+import com.common.dto.PaymentRequest;
+import com.common.dto.PaymentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

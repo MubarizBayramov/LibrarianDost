@@ -1,8 +1,10 @@
 package Book.Book.LibrarianDost.exception;
 
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 @Data
 public class BookException extends RuntimeException {
 
@@ -20,7 +22,4 @@ public class BookException extends RuntimeException {
         this.status = status;
     }
 
-    public HttpStatus getStatus() {
-        return status;
-    }
 }

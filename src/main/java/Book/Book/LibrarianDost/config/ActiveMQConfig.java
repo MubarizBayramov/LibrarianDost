@@ -1,11 +1,13 @@
 package Book.Book.LibrarianDost.config;
 
+import jakarta.jms.Session;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.core.JmsTemplate;
-
+import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
+import org.springframework.jms.support.converter.MessageType;
 @Configuration
 @EnableJms
 public class ActiveMQConfig {
@@ -21,6 +23,20 @@ public class ActiveMQConfig {
 
     @Bean
     public JmsTemplate jmsTemplate(ActiveMQConnectionFactory connectionFactory) {
-        return new JmsTemplate(connectionFactory);
+        JmsTemplate template = new JmsTemplate(connectionFactory);
+        template.setMessageConverter(jacksonJmsMessageConverter());
+        template.setSessionAcknowledgeMode(Session.AUTO_ACKNOWLEDGE); // vacib
+        return template;
     }
+
+    @Bean
+    public MappingJackson2MessageConverter jacksonJmsMessageConverter() {
+        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+        converter.setTargetType(MessageType.TEXT);
+        converter.setTypeIdPropertyName("_type");
+        return converter;
+    }
+
+
 }
+

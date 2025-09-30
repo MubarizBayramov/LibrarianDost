@@ -1,7 +1,7 @@
 package Book.Book.LibrarianDost.service;
 
-import Book.Book.LibrarianDost.request.PaymentRequest;
-import Book.Book.LibrarianDost.response.PaymentResponse;
+import com.common.dto.PaymentRequest;
+import com.common.dto.PaymentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jms.core.JmsTemplate;
@@ -17,12 +17,22 @@ public class PaymentEventService implements PaymentService {
     @Override
     public PaymentResponse pay(PaymentRequest request) {
         jmsTemplate.convertAndSend("payment-queue", request);
-        return new PaymentResponse("SENT", "OK", "Payment request sent via MQ");
+        return new PaymentResponse(
+                "SENT",
+                "OK",
+                request.getClient(),
+                request.getAmount()
+        );
     }
 
     @Override
     public PaymentResponse refundBook(String transactionCode, double amount) {
         jmsTemplate.convertAndSend("refund-queue", new RefundMessage(transactionCode, amount));
-        return new PaymentResponse("REFUNDED", "OK", "Payment request sent via MQ");
+        return new PaymentResponse(
+                transactionCode,
+                "REFUNDED",
+                "",
+                amount
+        );
     }
 }
