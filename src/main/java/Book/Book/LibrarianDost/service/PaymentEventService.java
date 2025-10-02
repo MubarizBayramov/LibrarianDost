@@ -2,10 +2,14 @@ package Book.Book.LibrarianDost.service;
 
 import com.common.dto.PaymentRequest;
 import com.common.dto.PaymentResponse;
+import com.common.dto.RefundMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Primary
 @Service
@@ -35,4 +39,11 @@ public class PaymentEventService implements PaymentService {
                 amount
         );
     }
+
+    @Override
+    public List<PaymentResponse> getAllPayments(double amount) {
+        jmsTemplate.convertAndSend("getAll-queue", new RefundMessage("N/A", amount));
+        return new ArrayList<>();
+    }
 }
+

@@ -1,22 +1,35 @@
 package Book.Book.LibrarianDost.service;
 
-import lombok.*;
 
 import java.io.Serializable;
 
-@Setter
-@Getter
-@Data
-
 public class RefundMessage implements Serializable {
     private String transactionCode;
-    private double amount;
+    private Double amount;
+
 
     public RefundMessage() {}
 
-    public RefundMessage(String transactionCode, double amount) {
+
+    public RefundMessage(String transactionCode, Double amount) {
         this.transactionCode = transactionCode;
         this.amount = amount;
     }
 
+
+    public String getTransactionCode() {
+        return transactionCode;
+    }
+
+    public void setTransactionCode(String transactionCode) {
+        this.transactionCode = transactionCode;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
 }

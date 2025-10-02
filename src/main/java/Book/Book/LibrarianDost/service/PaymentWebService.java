@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PaymentWebService implements PaymentService {
@@ -33,5 +35,10 @@ public class PaymentWebService implements PaymentService {
                 PaymentResponse.class
         );
         return response.getBody();
+    }
+
+    @Override
+    public List<PaymentResponse> getAllPayments(double amount) {
+        return List.of();
     }
 }
