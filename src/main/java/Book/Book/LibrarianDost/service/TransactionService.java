@@ -12,9 +12,10 @@ import Book.Book.LibrarianDost.entity.BuyerBook;
 import Book.Book.LibrarianDost.entity.Seller;
 import Book.Book.LibrarianDost.exception.BookException;
 import Book.Book.LibrarianDost.response.BookBuyResponse;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,18 +27,22 @@ public class TransactionService {
     private final SellerRepository sellerRepository;
     private final PaymentService paymentService;
 
-
+    // Hər əməliyyat üçün ayrıca transactionCode
     public BookBuyResponse buyBook(Long buyerId, Long bookId, int quantity) {
+        if (quantity != 1) {
+            throw new BookException("You can buy only one book per transaction!");
+        }
+
         Buyer buyer = buyerRepository.findById(buyerId)
                 .orElseThrow(() -> new BookException("Buyer not found"));
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new BookException("Book not found"));
 
-        if (book.getStock() < quantity) {
-            throw new BookException("Not enough stock!");
+        if (book.getStock() < 1) {
+            throw new BookException("Book is out of stock!");
         }
 
-        double totalAmount = book.getAmount() * quantity;
+        double totalAmount = book.getAmount();
 
         PaymentRequest paymentRequest = new PaymentRequest();
         paymentRequest.setAmount(totalAmount);
@@ -48,7 +53,10 @@ public class TransactionService {
             throw new BookException("Payment failed!");
         }
 
-        // Balans yeniləmələri
+        // Unikal əməliyyat kodu
+        String transactionCode = UUID.randomUUID().toString();
+
+        // Balans yenilə
         buyer.setBalance(buyer.getBalance() - totalAmount);
         buyerRepository.save(buyer);
 
@@ -59,50 +67,48 @@ public class TransactionService {
             sellerRepository.save(seller);
         }
 
-        // Kitab stokunu yenilə
-        book.setStock(book.getStock() - quantity);
-        book.setMarker("-" + quantity);
+        // Stok azaldılır
+        book.setStock(book.getStock() - 1);
+        book.setMarker("-1");
         bookRepository.save(book);
 
-        // BuyerBook yaz
-        BuyerBook buyerBook = buyerBookRepository.findByBuyerAndBook(buyer, book)
-                .orElse(new BuyerBook());
-        Integer existingQuantity = buyerBook.getQuantity();
+        // BuyerBook-a yeni əməliyyat kimi yaz
+        BuyerBook buyerBook = new BuyerBook();
         buyerBook.setBuyer(buyer);
         buyerBook.setBook(book);
-        buyerBook.setQuantity((existingQuantity != null ? existingQuantity : 0) + quantity);
-        buyerBook.setTransactionCode(paymentResponse.getTransactionId());
+        buyerBook.setQuantity(1);
+        buyerBook.setTransactionCode(transactionCode);
         buyerBookRepository.save(buyerBook);
 
         return new BookBuyResponse(
-                "Book purchased successfully! Transaction: " + paymentResponse.getTransactionId(),
+                "Book purchased successfully! Transaction: " + transactionCode,
                 book.getName(),
-                quantity,
-                book.getMarker()
+                1,
+                "-1"
         );
     }
 
-    public BookBuyResponse returnBook(Long buyerId, Long bookId, int quantity) {
+    public BookBuyResponse returnBook(Long buyerId, Long bookId, int quantity, String transactionCode) {
+        if (quantity != 1) {
+            throw new BookException("You can return only one book per transaction!");
+        }
+
         Buyer buyer = buyerRepository.findById(buyerId)
                 .orElseThrow(() -> new BookException("Buyer not found"));
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new BookException("Book not found"));
 
-        BuyerBook buyerBook = buyerBookRepository.findByBuyerAndBook(buyer, book)
-                .orElseThrow(() -> new BookException("This book was not bought by the buyer"));
+        BuyerBook buyerBook = buyerBookRepository.findByBuyerAndBookAndTransactionCode(buyer, book, transactionCode)
+                .orElseThrow(() -> new BookException("Invalid transaction code for this book or buyer"));
 
-        if (buyerBook.getQuantity() < quantity) {
-            throw new BookException("Return quantity is greater than bought quantity");
-        }
+        double totalAmount = book.getAmount();
 
-        double totalAmount = book.getAmount() * quantity;
-
-        PaymentResponse refundResponse = paymentService.refundBook(buyerBook.getTransactionCode(), totalAmount);
+        PaymentResponse refundResponse = paymentService.refundBook(transactionCode, totalAmount);
         if (refundResponse == null || refundResponse.getTransactionId() == null) {
             throw new BookException("Refund failed!");
         }
 
-        // Balans yeniləmələri
+        // Balans geri qaytarılır
         buyer.setBalance(buyer.getBalance() + totalAmount);
         buyerRepository.save(buyer);
 
@@ -112,24 +118,20 @@ public class TransactionService {
             sellerRepository.save(seller);
         }
 
-        // Kitab stokunu artır
-        book.setStock(book.getStock() + quantity);
-        book.setMarker("+" + quantity);
+        // Stok artırılır
+        book.setStock(book.getStock() + 1);
+        book.setMarker("+1");
         bookRepository.save(book);
 
-        // BuyerBook yenilə
-        buyerBook.setQuantity(buyerBook.getQuantity() - quantity);
-        if (buyerBook.getQuantity() == 0) {
-            buyerBookRepository.delete(buyerBook);
-        } else {
-            buyerBookRepository.save(buyerBook);
-        }
+        // BuyerBook silinir
+        buyerBookRepository.delete(buyerBook);
 
         return new BookBuyResponse(
                 "Book returned successfully! Refund Transaction: " + refundResponse.getTransactionId(),
                 book.getName(),
-                quantity,
-                book.getMarker()
+                1,
+                "+1"
         );
     }
+
 }
