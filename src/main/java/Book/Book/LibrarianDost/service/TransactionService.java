@@ -1,5 +1,9 @@
 package Book.Book.LibrarianDost.service;
 
+import Book.Book.LibrarianDost.repository.BookRepository;
+import Book.Book.LibrarianDost.repository.BuyerBookRepository;
+import Book.Book.LibrarianDost.repository.BuyerRepository;
+import Book.Book.LibrarianDost.repository.SellerRepository;
 import com.common.dto.PaymentRequest;
 import com.common.dto.PaymentResponse;
 import Book.Book.LibrarianDost.entity.Book;
@@ -7,21 +11,14 @@ import Book.Book.LibrarianDost.entity.Buyer;
 import Book.Book.LibrarianDost.entity.BuyerBook;
 import Book.Book.LibrarianDost.entity.Seller;
 import Book.Book.LibrarianDost.exception.BookException;
-import Book.Book.LibrarianDost.repository.BookRepository;
-import Book.Book.LibrarianDost.repository.BuyerBookRepository;
-import Book.Book.LibrarianDost.repository.BuyerRepository;
-import Book.Book.LibrarianDost.repository.SellerRepository;
 import Book.Book.LibrarianDost.response.BookBuyResponse;
-
-
-
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class BuyerTransactionService {
+public class TransactionService {
 
     private final BuyerRepository buyerRepository;
     private final BookRepository bookRepository;
