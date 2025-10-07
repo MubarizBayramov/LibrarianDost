@@ -21,7 +21,7 @@ public class Book {
     private Double amount;
 
     private Integer stock;
-    private String marker;
+
 
     @ManyToOne
     @JoinColumn(name = "seller_id")
@@ -32,13 +32,13 @@ public class Book {
     public Book() {}
 
     // Bütün sahələri qəbul edən konstruktor
-    public Book(Long id, String name, String author, Double amount, Integer stock, String marker, Seller seller) {
+    public Book(Long id, String name, String author, Double amount, Integer stock, Seller seller) {
         this.id = id;
         this.name = name;
         this.author = author;
         this.amount = amount;
         this.stock = stock;
-        this.marker = marker;
+
         this.seller = seller;
     }
 
@@ -58,9 +58,6 @@ public class Book {
     public Integer getStock() { return stock; }
     public void setStock(Integer stock) { this.stock = stock; }
 
-    public String getMarker() { return marker; }
-    public void setMarker(String marker) { this.marker = marker; }
-
-    public Seller getSeller() { return seller; }
+       public Seller getSeller() { return seller; }
     public void setSeller(Seller seller) { this.seller = seller; }
 }

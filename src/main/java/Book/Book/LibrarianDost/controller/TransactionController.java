@@ -1,5 +1,7 @@
 package Book.Book.LibrarianDost.controller;
 
+
+
 import Book.Book.LibrarianDost.response.BookBuyResponse;
 import Book.Book.LibrarianDost.service.TransactionService;
 import lombok.RequiredArgsConstructor;
@@ -12,20 +14,19 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
+
     @PostMapping("/{buyerId}/books/{bookId}")
     public BookBuyResponse buyBook(@PathVariable Long buyerId,
-                                   @PathVariable Long bookId,
-                                   @RequestParam(defaultValue = "1") int quantity) {
-        return transactionService.buyBook(buyerId, bookId, quantity);
+                                   @PathVariable Long bookId) {
+        return transactionService.buyBook(buyerId, bookId);
     }
+
 
     @DeleteMapping("/{buyerId}/books/{bookId}/transaction/{transactionCode}")
     public BookBuyResponse returnBook(@PathVariable Long buyerId,
                                       @PathVariable Long bookId,
-                                      @PathVariable String transactionCode,
-                                      @RequestParam(defaultValue = "1") int quantity) {
-        return transactionService.returnBook(buyerId, bookId, quantity, transactionCode);
+                                      @PathVariable String transactionCode) {
+        return transactionService.returnBook(buyerId, bookId, transactionCode);
     }
-
 
 }

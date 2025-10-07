@@ -11,5 +11,5 @@ public class BookBuyResponse {
     private String message;
     private String bookName;
     private int quantity;
-    private String marker;
+
 }

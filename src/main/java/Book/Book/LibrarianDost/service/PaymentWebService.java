@@ -1,6 +1,6 @@
 package Book.Book.LibrarianDost.service;
 
-import Book.Book.LibrarianDost.request.RefundRequest;
+import com.common.dto.RefundRequest;
 import com.common.dto.PaymentRequest;
 import com.common.dto.PaymentResponse;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class PaymentWebService implements PaymentService {
 
     @Override
     public PaymentResponse refundBook(String transactionCode, double amount) {
-        RefundRequest refundRequest = new RefundRequest(amount);
+        RefundRequest refundRequest = new RefundRequest(transactionCode, amount);
         ResponseEntity<PaymentResponse> response = webClient.postForEntity(
                 "http://localhost:8880/payments/refund/" + transactionCode,
                 refundRequest,
@@ -36,6 +36,8 @@ public class PaymentWebService implements PaymentService {
         );
         return response.getBody();
     }
+
+
 
     @Override
     public List<PaymentResponse> getAllPayments(double amount) {
