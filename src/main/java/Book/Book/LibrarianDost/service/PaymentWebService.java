@@ -17,7 +17,7 @@ public class PaymentWebService implements PaymentService {
     private final RestTemplate webClient;
 
     @Override
-    public PaymentResponse pay(PaymentRequest request) {
+    public PaymentResponse makePayment(PaymentRequest request) {
         ResponseEntity<PaymentResponse> response = webClient.postForEntity(
                 "http://localhost:8880/payments",
                 request,
@@ -27,7 +27,7 @@ public class PaymentWebService implements PaymentService {
     }
 
     @Override
-    public PaymentResponse refundBook(String transactionCode, double amount) {
+    public PaymentResponse refundPayment(String transactionCode, double amount) {
         RefundRequest refundRequest = new RefundRequest(transactionCode, amount);
         ResponseEntity<PaymentResponse> response = webClient.postForEntity(
                 "http://localhost:8880/payments/refund/" + transactionCode,

@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public interface PaymentService {
-    PaymentResponse pay(PaymentRequest request);
-    PaymentResponse refundBook(String transactionCode, double amount);
+    PaymentResponse makePayment(PaymentRequest request);
+    PaymentResponse refundPayment(String transactionCode, double amount);
     List<PaymentResponse> getAllPayments(double amount);
 }

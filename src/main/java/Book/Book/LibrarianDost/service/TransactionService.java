@@ -16,8 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
@@ -42,26 +40,26 @@ public class TransactionService {
 
         double totalAmount = book.getAmount();
 
-        // Ödəniş sorğusu yaradılır (transactionCode artıq payment sistemi tərəfindən yaradılacaq)
+        // Ödəniş sorğusu yaradılır
         PaymentRequest paymentRequest = new PaymentRequest();
         paymentRequest.setAmount(totalAmount);
         paymentRequest.setClient("LIBRARIAN");
 
         // Ödəniş edilir
-        PaymentResponse paymentResponse = paymentService.pay(paymentRequest);
+        PaymentResponse paymentResponse = paymentService.makePayment(paymentRequest);
         if (paymentResponse == null || paymentResponse.getTransactionCode() == null) {
             throw new BookException("Payment failed!");
         }
 
-        // Əlaqəli BuyerBook yaradılır
+        // BuyerBook yaradılır
         BuyerBook buyerBook = new BuyerBook();
         buyerBook.setBuyer(buyer);
         buyerBook.setBook(book);
         buyerBook.setQuantity(1);
-        buyerBook.setTransactionCode(paymentResponse.getTransactionCode()); // Payment tərəfindən verilən kod
+        buyerBook.setTransactionCode(paymentResponse.getTransactionCode());
         buyerBookRepository.save(buyerBook);
 
-        // Kitab stokunu azaldırıq
+        // Stok azaldılır
         book.setStock(book.getStock() - 1);
         bookRepository.save(book);
 
@@ -74,22 +72,18 @@ public class TransactionService {
 
     @Transactional
     public BookBuyResponse returnBook(Long buyerId, Long bookId, String transactionCode) {
-        System.out.println("Returning book: buyerId=" + buyerId + ", bookId=" + bookId + ", transactionCode=" + transactionCode);
 
-        Optional<BuyerBook> buyerBookOpt =
-                buyerBookRepository.findByBuyerIdAndBookIdAndTransactionCode(buyerId, bookId, transactionCode);
-        System.out.println("BuyerBook found: " + buyerBookOpt.isPresent());
-
-        BuyerBook buyerBook = buyerBookOpt.orElseThrow(
-                () -> new BookException("Invalid transaction code for this book or buyer")
-        );
+        BuyerBook buyerBook = buyerBookRepository
+                .findByBuyerIdAndBookIdAndTransactionCode(buyerId, bookId, transactionCode)
+                .orElseThrow(() -> new BookException("Invalid transaction code for this book or buyer"));
 
         Buyer buyer = buyerBook.getBuyer();
         Book book = buyerBook.getBook();
+
         double totalAmount = book.getAmount();
 
         // Refund əməliyyatı
-        PaymentResponse refundResponse = paymentService.refundBook(transactionCode, totalAmount);
+        PaymentResponse refundResponse = paymentService.refundPayment(transactionCode, totalAmount);
         if (refundResponse == null || refundResponse.getTransactionCode() == null) {
             throw new BookException("Refund failed!");
         }
