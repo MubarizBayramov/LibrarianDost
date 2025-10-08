@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface BuyerBookRepository extends JpaRepository<BuyerBook, Long> {
 
 
-    Optional<BuyerBook> findByBuyerIdAndBookIdAndTransactionCode(Long buyerId, Long bookId, String transactionCode);
+    Optional<BuyerBook> findByBuyerIdAndTransactionCode(Long buyerId, String transactionCode);
 }

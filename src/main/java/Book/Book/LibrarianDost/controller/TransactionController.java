@@ -1,11 +1,11 @@
 package Book.Book.LibrarianDost.controller;
 
-
-
 import Book.Book.LibrarianDost.response.BookBuyResponse;
 import Book.Book.LibrarianDost.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/buyers")
@@ -15,18 +15,16 @@ public class TransactionController {
     private final TransactionService transactionService;
 
 
-    @PostMapping("/{buyerId}/books/{bookId}")
-    public BookBuyResponse buyBook(@PathVariable Long buyerId,
-                                   @PathVariable Long bookId) {
-        return transactionService.buyBook(buyerId, bookId);
+    @PostMapping("/{buyerId}/books")
+    public List<BookBuyResponse> buyBooks(@PathVariable Long buyerId,
+                                          @RequestBody List<Long> bookIds) {
+        return transactionService.buyBooks(buyerId, bookIds);
     }
 
 
-    @DeleteMapping("/{buyerId}/books/{bookId}/transaction/{transactionCode}")
-    public BookBuyResponse returnBook(@PathVariable Long buyerId,
-                                      @PathVariable Long bookId,
-                                      @PathVariable String transactionCode) {
-        return transactionService.returnBook(buyerId, bookId, transactionCode);
+    @DeleteMapping("/{buyerId}/books/transactions")
+    public List<BookBuyResponse> returnBooks(@PathVariable Long buyerId,
+                                             @RequestBody List<String> transactionCodes) {
+        return transactionService.returnBooks(buyerId, transactionCodes);
     }
-
 }
