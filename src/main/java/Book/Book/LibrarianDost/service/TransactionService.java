@@ -41,12 +41,12 @@ public class TransactionService {
 
         double totalAmount = book.getAmount();
 
-        // Balans yoxlanışı
+
         if (buyer.getBalance() < totalAmount) {
             throw new BookException("Insufficient balance!");
         }
 
-        // Ödəniş sorğusu
+
         PaymentRequest paymentRequest = new PaymentRequest();
         paymentRequest.setAmount(totalAmount);
         paymentRequest.setClient("LIBRARIAN");
@@ -56,17 +56,15 @@ public class TransactionService {
             throw new BookException("Payment failed!");
         }
 
-        // Buyer balansından pul çıxılır
+
         buyer.setBalance(buyer.getBalance() - totalAmount);
         buyerRepository.save(buyer);
 
-        // Seller balansına pul əlavə olunur (əgər seller varsa)
-        if (seller != null) {
             seller.setBalance((seller.getBalance() != null ? seller.getBalance() : 0) + totalAmount);
             sellerRepository.save(seller);
-        }
 
-        // Əlaqə cədvəli (BuyerBook)
+
+
         BuyerBook buyerBook = new BuyerBook();
         buyerBook.setBuyer(buyer);
         buyerBook.setBook(book);
@@ -74,7 +72,7 @@ public class TransactionService {
         buyerBook.setTransactionCode(paymentResponse.getTransactionCode());
         buyerBookRepository.save(buyerBook);
 
-        // Stokdan 1 ədəd çıxılır
+
         book.setStock(book.getStock() - 1);
         bookRepository.save(book);
 
