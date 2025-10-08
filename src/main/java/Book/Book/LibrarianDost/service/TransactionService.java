@@ -61,14 +61,14 @@ public class TransactionService {
                 throw new BookException("Payment failed for book: " + book.getName());
             }
 
-            // Balance update
+
             buyer.setBalance(buyer.getBalance() - totalAmount);
             buyerRepository.save(buyer);
 
             seller.setBalance((seller.getBalance() != null ? seller.getBalance() : 0) + totalAmount);
             sellerRepository.save(seller);
 
-            // BuyerBook yaratmaq
+
             BuyerBook buyerBook = new BuyerBook();
             buyerBook.setBuyer(buyer);
             buyerBook.setBook(book);
@@ -76,7 +76,7 @@ public class TransactionService {
             buyerBook.setTransactionCode(paymentResponse.getTransactionCode());
             buyerBookRepository.save(buyerBook);
 
-            // Stock update
+
             book.setStock(book.getStock() - 1);
             bookRepository.save(book);
 
