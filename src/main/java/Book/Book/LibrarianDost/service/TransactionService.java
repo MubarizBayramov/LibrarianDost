@@ -33,6 +33,7 @@ public class TransactionService {
                 .orElseThrow(() -> new BookException("Buyer not found"));
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new BookException("Book not found"));
+        Seller seller = book.getSeller();
 
         if (book.getStock() < 1) {
             throw new BookException("Book is out of stock!");
@@ -40,18 +41,32 @@ public class TransactionService {
 
         double totalAmount = book.getAmount();
 
-        // Ödəniş sorğusu yaradılır
+        // Balans yoxlanışı
+        if (buyer.getBalance() < totalAmount) {
+            throw new BookException("Insufficient balance!");
+        }
+
+        // Ödəniş sorğusu
         PaymentRequest paymentRequest = new PaymentRequest();
         paymentRequest.setAmount(totalAmount);
         paymentRequest.setClient("LIBRARIAN");
 
-        // Ödəniş edilir
         PaymentResponse paymentResponse = paymentService.makePayment(paymentRequest);
         if (paymentResponse == null || paymentResponse.getTransactionCode() == null) {
             throw new BookException("Payment failed!");
         }
 
-        // BuyerBook yaradılır
+        // Buyer balansından pul çıxılır
+        buyer.setBalance(buyer.getBalance() - totalAmount);
+        buyerRepository.save(buyer);
+
+        // Seller balansına pul əlavə olunur (əgər seller varsa)
+        if (seller != null) {
+            seller.setBalance((seller.getBalance() != null ? seller.getBalance() : 0) + totalAmount);
+            sellerRepository.save(seller);
+        }
+
+        // Əlaqə cədvəli (BuyerBook)
         BuyerBook buyerBook = new BuyerBook();
         buyerBook.setBuyer(buyer);
         buyerBook.setBook(book);
@@ -59,7 +74,7 @@ public class TransactionService {
         buyerBook.setTransactionCode(paymentResponse.getTransactionCode());
         buyerBookRepository.save(buyerBook);
 
-        // Stok azaldılır
+        // Stokdan 1 ədəd çıxılır
         book.setStock(book.getStock() - 1);
         bookRepository.save(book);
 
@@ -79,28 +94,30 @@ public class TransactionService {
 
         Buyer buyer = buyerBook.getBuyer();
         Book book = buyerBook.getBook();
+        Seller seller = book.getSeller();
 
         double totalAmount = book.getAmount();
 
-        // Refund əməliyyatı
         PaymentResponse refundResponse = paymentService.refundPayment(transactionCode, totalAmount);
         if (refundResponse == null || refundResponse.getTransactionCode() == null) {
             throw new BookException("Refund failed!");
         }
 
-        // Balans düzəlişləri
+
         buyer.setBalance((buyer.getBalance() != null ? buyer.getBalance() : 0) + totalAmount);
         buyerRepository.save(buyer);
 
-        Seller seller = book.getSeller();
-        if (seller != null) {
+
+
             seller.setBalance((seller.getBalance() != null ? seller.getBalance() : 0) - totalAmount);
             sellerRepository.save(seller);
-        }
 
-        // Stok və əlaqə silinməsi
+
+
         book.setStock(book.getStock() + 1);
         bookRepository.save(book);
+
+
         buyerBookRepository.delete(buyerBook);
 
         return new BookBuyResponse(
