@@ -40,7 +40,8 @@ public class PaymentWebService implements PaymentService {
 
 
     @Override
-    public List<PaymentResponse> getAllPayments(double amount) {
+    public List<PaymentResponse>
+    getAllPayments(double amount) {
         return List.of();
     }
 }

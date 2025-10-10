@@ -130,11 +130,20 @@
 
 
 
-	</dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-test</artifactId>
+				<scope>test</scope>
+			</dependency>
+
+
+
+		</dependencies>
+
+
 
 	<build>
 		<plugins>
-
 			<!-- Maven Compiler Plugin with Lombok -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

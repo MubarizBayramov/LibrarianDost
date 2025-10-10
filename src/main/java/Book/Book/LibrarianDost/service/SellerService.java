@@ -70,12 +70,12 @@ public class SellerService {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new BookException("Book not found", HttpStatus.NOT_FOUND));
 
-        // Seller-in sahibi olduğunu yoxla
+
         if (!book.getSeller().getId().equals(sellerId)) {
             throw new BookException("This book does not belong to this seller", HttpStatus.FORBIDDEN);
         }
 
-        // Confirm yoxlanışı
+
         if (confirm == null || !confirm.equalsIgnoreCase("yes")) {
             List<Book> books = bookRepository.findBySellerId(sellerId);
             String bookList = books.stream()
@@ -87,7 +87,7 @@ public class SellerService {
             );
         }
 
-        // Quantity verilibsə, stock-u azaldırıq
+
         if (quantity != null && quantity > 0) {
             if (book.getStock() < quantity) {
                 throw new BookException("Delete quantity is greater than current stock", HttpStatus.BAD_REQUEST);
@@ -95,14 +95,14 @@ public class SellerService {
 
             book.setStock(book.getStock() - quantity);
 
-            // Əgər stock 0-dırsa, kitabı tam sil
+
             if (book.getStock() == 0) {
                 bookRepository.delete(book);
             } else {
                 bookRepository.save(book);
             }
         } else {
-            // Əgər quantity göstərilməyibsə, kitabı tam sil
+
             bookRepository.delete(book);
         }
     }

@@ -28,10 +28,10 @@ public class Book {
     @JsonBackReference
     private Seller seller;
 
-    // Parametrsiz konstruktor
+
     public Book() {}
 
-    // Bütün sahələri qəbul edən konstruktor
+
     public Book(Long id, String name, String author, Double amount, Integer stock, Seller seller) {
         this.id = id;
         this.name = name;

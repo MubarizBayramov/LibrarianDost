@@ -1,0 +1,19 @@
+2025-10-09 14:50:34 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2025-10-09 14:50:34 [main] INFO  B.B.L.LibrarianDostApplicationTests - Starting LibrarianDostApplicationTests using Java 21.0.5 with PID 28624 (started by User in C:\Users\User\Desktop\LibrarianDost)
+2025-10-09 14:50:34 [main] INFO  B.B.L.LibrarianDostApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-10-09 14:50:35 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-10-09 14:50:35 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 65 ms. Found 4 JPA repository interfaces.
+2025-10-09 14:50:36 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-10-09 14:50:36 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:3a9aeab5-df00-40b8-a1dd-72aa3161ffc0 user=SA
+2025-10-09 14:50:36 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-10-09 14:50:37 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-10-09 14:50:37 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.2.Final
+2025-10-09 14:50:37 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-10-09 14:50:37 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-10-09 14:50:39 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-10-09 14:50:39 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-10-09 14:50:40 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-10-09 14:50:41 [main] INFO  B.B.L.LibrarianDostApplicationTests - Started LibrarianDostApplicationTests in 7.954 seconds (process running for 9.479)
+2025-10-09 14:50:42 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-10-09 14:50:42 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-10-09 14:50:42 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
