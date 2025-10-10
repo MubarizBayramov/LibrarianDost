@@ -39,10 +39,6 @@ class PaymentWebServiceTest {
         request.setClient("Mubariz");
         request.setTransactionCode("TX98765");
 
-
-
-
-
         PaymentResponse mockResponse = new PaymentResponse();
         mockResponse.setStatus("SUCCESS");
         mockResponse.setTransactionId("TX98765");
@@ -57,12 +53,12 @@ class PaymentWebServiceTest {
 
         PaymentResponse response = paymentWebService.makePayment(request);
 
-        // Nəticəni yoxlayırıq
+
         assertNotNull(response);
         assertEquals("SUCCESS", response.getStatus());
         assertEquals("TX98765", response.getTransactionCode());
 
-        // RestTemplate çağırıldığını yoxlayırıq
+
         verify(webClient, times(1)).postForEntity(
                 eq("http://localhost:8880/payments"),
                 eq(request),

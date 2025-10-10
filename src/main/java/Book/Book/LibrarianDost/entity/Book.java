@@ -38,11 +38,10 @@ public class Book {
         this.author = author;
         this.amount = amount;
         this.stock = stock;
-
         this.seller = seller;
     }
 
-    // Getter və Setter-lər
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -58,6 +57,6 @@ public class Book {
     public Integer getStock() { return stock; }
     public void setStock(Integer stock) { this.stock = stock; }
 
-       public Seller getSeller() { return seller; }
+    public Seller getSeller() { return seller; }
     public void setSeller(Seller seller) { this.seller = seller; }
 }
