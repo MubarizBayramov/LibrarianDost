@@ -25,7 +25,7 @@ public class ActiveMQConfig {
     public JmsTemplate jmsTemplate(ActiveMQConnectionFactory connectionFactory) {
         JmsTemplate template = new JmsTemplate(connectionFactory);
         template.setMessageConverter(jacksonJmsMessageConverter());
-        template.setSessionAcknowledgeMode(Session.AUTO_ACKNOWLEDGE); // vacib
+        template.setSessionAcknowledgeMode(Session.AUTO_ACKNOWLEDGE);
         return template;
     }
 

@@ -76,8 +76,7 @@ class PaymentWebServiceTest {
 
         List<PaymentResponse> responses = paymentWebService.getAllPayments(amount);
 
-
         assertNotNull(responses);
-        assertTrue(responses.isEmpty(), "List boş olmalıdır, çünki metod List.of() qaytarır");
+        assertTrue(responses.isEmpty(), "The list must be empty because the method returns `List.of()`.\n");
     }
 }

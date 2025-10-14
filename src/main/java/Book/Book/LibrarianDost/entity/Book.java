@@ -19,7 +19,6 @@ public class Book {
     @Min(value = 1, message = "amount must be at least 1")
     @Column(nullable = false)
     private Double amount;
-
     private Integer stock;
 
 

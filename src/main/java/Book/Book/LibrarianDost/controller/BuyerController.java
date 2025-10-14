@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/buyers/books")
+@RequestMapping("/buyers")
 @RequiredArgsConstructor
 public class BuyerController {
 
     private final BuyerService buyerService;
 
-    @GetMapping
+    @GetMapping("/books")
     public List<BookResponse> getAllBooks() {
         return buyerService.getAllBooks();
     }
@@ -30,4 +30,6 @@ public class BuyerController {
                                           @RequestParam(required = false) String sellerName) {
         return buyerService.searchBooks(name, minAmount, maxAmount, sellerName);
     }
+
+
 }

@@ -52,7 +52,6 @@ class BuyerServiceTest {
         book2.setSeller(null);
 
         when(bookRepository.findAll()).thenReturn(Arrays.asList(book1, book2));
-
         List<BookResponse> responses = buyerService.getAllBooks();
 
 

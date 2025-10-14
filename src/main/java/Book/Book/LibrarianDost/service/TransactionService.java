@@ -36,6 +36,7 @@ public class TransactionService {
 
         List<BookBuyResponse> responses = new ArrayList<>();
 
+
         for (Long bookId : bookIds) {
             Book book = bookRepository.findById(bookId)
                     .orElseThrow(() -> new BookException("Book not found: " + bookId));
@@ -111,18 +112,18 @@ public class TransactionService {
                 throw new BookException("Refund failed for book: " + book.getName());
             }
 
-            // Balance update
+
             buyer.setBalance((buyer.getBalance() != null ? buyer.getBalance() : 0) + totalAmount);
             buyerRepository.save(buyer);
 
             seller.setBalance((seller.getBalance() != null ? seller.getBalance() : 0) - totalAmount);
             sellerRepository.save(seller);
 
-            // Stock update
+
             book.setStock(book.getStock() + 1);
             bookRepository.save(book);
 
-            // BuyerBook delete
+
             buyerBookRepository.delete(buyerBook);
 
             responses.add(new BookBuyResponse(
