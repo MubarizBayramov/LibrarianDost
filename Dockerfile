@@ -1,12 +1,5 @@
-# 1. Java image
-FROM openjdk:17-jdk-slim
-
-# 2. JAR faylını konteynerə kopyala
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-
-# 3. Port aç
+FROM openjdk:21-jdk-slim
+WORKDIR /app
+COPY target/LibrarianDost-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
-
-# 4. App-i işə sal
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
