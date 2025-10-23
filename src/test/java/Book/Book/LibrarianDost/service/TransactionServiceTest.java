@@ -67,11 +67,11 @@ class TransactionServiceTest {
 
     @Test
     void testBuyBooks_Success() {
-        // mock davranışları
+
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(bookRepository.findById(100L)).thenReturn(Optional.of(book));
 
-        // PaymentResponse real strukturuna uyğun
+
         PaymentResponse paymentResponse = new PaymentResponse(
                 "TXN12345",
                 "SUCCESS",
@@ -80,10 +80,10 @@ class TransactionServiceTest {
         );
         when(paymentService.makePayment(any(PaymentRequest.class))).thenReturn(paymentResponse);
 
-        // test edilən metod
+
         List<BookBuyResponse> responses = transactionService.buyBooks(1L, List.of(100L));
 
-        // yoxlamalar
+
         assertNotNull(responses);
         assertEquals(1, responses.size());
         assertEquals("Spring Boot Guide", responses.get(0).getBookName());
