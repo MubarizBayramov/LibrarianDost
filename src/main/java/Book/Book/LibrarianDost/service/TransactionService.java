@@ -77,7 +77,6 @@ public class TransactionService {
             buyerBook.setTransactionCode(paymentResponse.getTransactionCode());
             buyerBookRepository.save(buyerBook);
 
-
             book.setStock(book.getStock() - 1);
             bookRepository.save(book);
 
