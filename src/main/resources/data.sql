@@ -34,8 +34,8 @@ CREATE TABLE buyer_book (
     CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES book(id)
 );
 
-INSERT INTO seller(id, name, phone) VALUES (1, 'Hegel', '0551234567');
-INSERT INTO seller(id, name, phone) VALUES (2, 'Spinosa', '0518913254');
+INSERT INTO seller(name, phone) VALUES ('Hegel', '0551234567');
+INSERT INTO seller(name, phone) VALUES ('Spinosa', '0518913254');
 
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Java Basics', 'Alice', 78, 208, 1);
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Spring Intro', 'Bob', 52, 241, 1);

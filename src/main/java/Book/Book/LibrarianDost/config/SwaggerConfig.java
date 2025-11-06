@@ -2,10 +2,10 @@ package Book.Book.LibrarianDost.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-
 
 @Configuration
 public class SwaggerConfig {
@@ -16,6 +16,14 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("LibrarianDost API")
                         .version("1.0")
-                        .description("Seller və Buyer API-ləri"));
+                        .description("Seller və Buyer API-ləri"))
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+                .components(new io.swagger.v3.oas.models.Components()
+                        .addSecuritySchemes("bearerAuth",
+                                new SecurityScheme()
+                                        .name("Authorization")
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")));
     }
 }
