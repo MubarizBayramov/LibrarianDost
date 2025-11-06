@@ -1,11 +1,11 @@
--- SELLER cədvəli
+
 CREATE TABLE seller (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     phone VARCHAR(20) NOT NULL
 );
 
--- BOOK cədvəli
+
 CREATE TABLE book (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE book (
     CONSTRAINT fk_book_seller FOREIGN KEY (seller_id) REFERENCES seller(id)
 );
 
--- BUYER cədvəli
+
 CREATE TABLE buyer (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -25,7 +25,6 @@ CREATE TABLE buyer (
     balance DOUBLE DEFAULT 1000
 );
 
--- BUYER_BOOK cədvəli
 CREATE TABLE buyer_book (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     buyer_id BIGINT NOT NULL,
@@ -35,11 +34,9 @@ CREATE TABLE buyer_book (
     CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES book(id)
 );
 
--- SELLER-lər
 INSERT INTO seller(id, name, phone) VALUES (1, 'Hegel', '0551234567');
 INSERT INTO seller(id, name, phone) VALUES (2, 'Spinosa', '0518913254');
 
--- Seller A üçün kitablar
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Java Basics', 'Alice', 78, 208, 1);
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Spring Intro', 'Bob', 52, 241, 1);
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Hibernate Guide', 'Charlie', 91, 282, 1);
@@ -51,7 +48,6 @@ INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Docker Essenti
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Kubernetes Guide', 'Ivy', 98, 288, 1);
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Design Patterns', 'Jack', 72, 299, 1);
 
--- Seller B üçün kitablar
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Java Basics', 'Alice', 141, 310, 2);
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Spring Intro', 'Bob', 67, 311, 2);
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Hibernate Guide', 'Charlie', 122, 326, 2);
@@ -63,12 +59,12 @@ INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Docker Essenti
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Kubernetes Guide', 'Ivy', 149, 389, 2);
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Design Patterns', 'Jack', 88, 390, 2);
 
--- BUYER-lər
+
 INSERT INTO buyer(name, phone, email) VALUES ('Buyer1', '0501111111', 'buyer1@example.com');
 INSERT INTO buyer(name, phone, email) VALUES ('Buyer2', '0502222222', 'buyer2@example.com');
 INSERT INTO buyer(name, phone, email) VALUES ('Buyer3', '0503333333', 'buyer3@example.com');
 INSERT INTO buyer(name, phone, email) VALUES ('Buyer4', '0504444444', 'buyer4@example.com');
 INSERT INTO buyer(name, phone, email) VALUES ('Buyer5', '0501111112', 'buyer5@example.com');
 
--- Mövcud alıcıların balansını 1010 olaraq təyin etmək
+
 UPDATE buyer SET balance = 10000 WHERE balance IS NULL;

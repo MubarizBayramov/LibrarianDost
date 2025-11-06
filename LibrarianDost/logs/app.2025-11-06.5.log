@@ -1,0 +1,7 @@
+2025-11-06 13:23:45 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2025-11-06 13:23:45 [restartedMain] INFO  B.B.L.LibrarianDostApplication - Starting LibrarianDostApplication using Java 21.0.5 with PID 89492 (C:\Users\User\Desktop\LibrarianDost\target\classes started by User in C:\Users\User\Desktop\LibrarianDost)
+2025-11-06 13:23:45 [restartedMain] INFO  B.B.L.LibrarianDostApplication - The following 1 profile is active: "prod"
+2025-11-06 13:23:45 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-11-06 13:23:45 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-11-06 13:23:47 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-06 13:23:47 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 74 ms. Found 4 JPA repository interfaces.

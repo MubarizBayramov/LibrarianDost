@@ -2,12 +2,21 @@ package Book.Book.LibrarianDost.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
-public class Seller {
+public class Seller implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,33 +25,44 @@ public class Seller {
     private String name;
     private String phone;
     private Double balance = 0.0;
+    private String password;
 
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Book> books = new ArrayList<>();
 
-    public Seller() {}
-
-    public Seller(Long id, String name, String phone, Double balance, List<Book> books) {
-        this.id = id;
-        this.name = name;
-        this.phone = phone;
-        this.balance = balance;
-        this.books = books;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    @Override
+    public String getUsername() {
+        return name;
+    }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-    public Double getBalance() { return balance; }
-    public void setBalance(Double balance) { this.balance = balance; }
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-    public List<Book> getBooks() { return books; }
-    public void setBooks(List<Book> books) { this.books = books; }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
