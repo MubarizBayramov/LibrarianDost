@@ -6,6 +6,7 @@ import Book.Book.LibrarianDost.request.BookUpdateRequest;
 import Book.Book.LibrarianDost.response.BookAddResponse;
 import Book.Book.LibrarianDost.service.SellerService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,14 +28,21 @@ public class SellerController {
     }
 
 
+    @PreAuthorize("hasRole('ROLE_ADD_BOOK')")
     @PostMapping("/{sellerId}/books")
     public BookAddResponse addBook(@PathVariable Long sellerId,
                                    @RequestBody @Valid BookAddRequest request) {
         Book savedBook = sellerService.addBookToSeller(sellerId, request);
-        return new BookAddResponse(savedBook.getName(), savedBook.getAuthor(), savedBook.getAmount(), savedBook.getStock());
+        return new BookAddResponse(
+                savedBook.getName(),
+                savedBook.getAuthor(),
+                savedBook.getAmount(),
+                savedBook.getStock()
+        );
     }
 
 
+    @PreAuthorize("hasRole('ROLE_UPDATE_BOOK')")
     @PutMapping("/{sellerId}/books/{bookId}")
     public Book updateBook(@PathVariable Long sellerId,
                            @PathVariable Long bookId,
@@ -42,6 +50,8 @@ public class SellerController {
         return sellerService.updateBook(sellerId, bookId, updatedBook);
     }
 
+
+    @PreAuthorize("hasRole('ROLE_DELETE_BOOK')")
     @DeleteMapping("/{sellerId}/books/{bookId}")
     public String deleteBook(@PathVariable Long sellerId,
                              @PathVariable Long bookId,
@@ -50,7 +60,4 @@ public class SellerController {
         sellerService.deleteBook(sellerId, bookId, quantity, confirm);
         return "Book deleted successfully!";
     }
-
-
-
 }
