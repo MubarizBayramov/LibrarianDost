@@ -23,7 +23,6 @@ public class Seller implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private String phone;
     private Double balance = 0.0;

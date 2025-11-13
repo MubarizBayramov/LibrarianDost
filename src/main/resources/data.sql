@@ -54,17 +54,16 @@ CREATE TABLE buyer_book (
     CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES book(id)
 );
 
--- Rollar
+
 INSERT INTO roles (name, seller, buyer) VALUES
 ('ROLE_ADD_BOOK', 1, 0),
 ('ROLE_DELETE_BOOK', 1, 0),
 ('ROLE_UPDATE_BOOK', 1, 0);
 
--- Satıcılar (parollar əlavə olunub)
 INSERT INTO seller(name, phone, password, balance) VALUES ('Hegel', '0551234567', '1234', 0);
 INSERT INTO seller(name, phone, password, balance) VALUES ('Spinosa', '0518913254', '12345', 0);
 
--- Satıcılara rollar verilir
+
 INSERT INTO seller_roles (seller_id, role_id) VALUES
 (1, 1),
 (1, 2),
@@ -73,7 +72,7 @@ INSERT INTO seller_roles (seller_id, role_id) VALUES
 (2, 2),
 (2, 3);
 
--- Kitablar
+
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Java Basics', 'Alice', 78, 208, 1);
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Spring Intro', 'Bob', 52, 241, 1);
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Hibernate Guide', 'Charlie', 91, 282, 1);
@@ -96,7 +95,7 @@ INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Docker Essenti
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Kubernetes Guide', 'Ivy', 149, 389, 2);
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Design Patterns', 'Jack', 88, 390, 2);
 
--- Alıcılar
+
 INSERT INTO buyer(name, phone, email) VALUES
 ('Buyer1', '0501111111', 'buyer1@example.com'),
 ('Buyer2', '0502222222', 'buyer2@example.com'),
