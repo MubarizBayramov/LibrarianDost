@@ -1,50 +1,81 @@
 package Book.Book.LibrarianDost.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
-public class Buyer {
+public class Buyer implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String phone;
     private String email;
+    private String password;
     private Double balance = 1000.0;
 
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<BuyerBook> buyerBooks = new ArrayList<>();
 
-    public Buyer() {}
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "buyer_roles",
+            joinColumns = @JoinColumn(name = "buyer_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
 
-    public Buyer(Long id, String name, String phone, String email, Double balance, List<BuyerBook> buyerBooks) {
-        this.id = id;
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
-        this.balance = balance;
-        this.buyerBooks = buyerBooks;
+    // ---------------- UserDetails implementasiyası ----------------
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+        return authorities;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @Override
+    public String getUsername() {
+        return name; // istəsən email də ola bilər
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-    public Double getBalance() { return balance; }
-    public void setBalance(Double balance) { this.balance = balance; }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-    public List<BuyerBook> getBuyerBooks() { return buyerBooks; }
-    public void setBuyerBooks(List<BuyerBook> buyerBooks) { this.buyerBooks = buyerBooks; }
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

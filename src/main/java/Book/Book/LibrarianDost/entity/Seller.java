@@ -25,8 +25,9 @@ public class Seller implements UserDetails {
     private Long id;
     private String name;
     private String phone;
-    private Double balance = 0.0;
     private String password;
+    private Double balance = 0.0;
+
 
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference

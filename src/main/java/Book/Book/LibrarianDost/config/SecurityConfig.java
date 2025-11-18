@@ -1,6 +1,8 @@
 package Book.Book.LibrarianDost.config;
 
+import Book.Book.LibrarianDost.entity.Buyer;
 import Book.Book.LibrarianDost.entity.Seller;
+import Book.Book.LibrarianDost.repository.BuyerRepository;
 import Book.Book.LibrarianDost.repository.SellerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +27,7 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final SellerRepository sellerRepository;
+    private final BuyerRepository buyerRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -44,17 +47,22 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                Seller seller = sellerRepository.findByName(username).orElse(null);
-                if (seller == null) {
-                    throw new UsernameNotFoundException("Seller not found");
-                }
-                return seller;
+        return username -> {
+
+            Seller seller = sellerRepository.findByName(username).orElse(null);
+            if (seller != null) {
+                return seller; // Seller login oldu
             }
+
+            Buyer buyer = buyerRepository.findByName(username).orElse(null);
+            if (buyer != null) {
+                return buyer; // Buyer login oldu
+            }
+
+            throw new UsernameNotFoundException("User not found");
         };
     }
+
 
 
     @Bean

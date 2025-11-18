@@ -23,8 +23,8 @@ CREATE TABLE seller (
 CREATE TABLE seller_roles (
     seller_id BIGINT NOT NULL,
     role_id BIGINT NOT NULL,
-    CONSTRAINT fk_seller FOREIGN KEY (seller_id) REFERENCES seller(id),
-    CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES roles(id)
+    CONSTRAINT fk_seller_roles_seller FOREIGN KEY (seller_id) REFERENCES seller(id),
+    CONSTRAINT fk_seller_roles_role FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
 CREATE TABLE book (
@@ -41,24 +41,37 @@ CREATE TABLE buyer (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     phone VARCHAR(20) NOT NULL,
-    email VARCHAR(255),
+        email VARCHAR(255),
+        password VARCHAR(255),
     balance DOUBLE DEFAULT 1000
+);
+
+CREATE TABLE buyer_roles (
+    buyer_id BIGINT NOT NULL,
+    role_id BIGINT NOT NULL,
+    CONSTRAINT fk_buyer_roles_buyer FOREIGN KEY (buyer_id) REFERENCES buyer(id),
+    CONSTRAINT fk_buyer_roles_role FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
 CREATE TABLE buyer_book (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     buyer_id BIGINT NOT NULL,
     book_id BIGINT NOT NULL,
-    quantity INT NOT NULL,
-    CONSTRAINT fk_buyer FOREIGN KEY (buyer_id) REFERENCES buyer(id),
-    CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES book(id)
+
+    CONSTRAINT fk_buyer_book_buyer FOREIGN KEY (buyer_id) REFERENCES buyer(id),
+    CONSTRAINT fk_buyer_book_book FOREIGN KEY (book_id) REFERENCES book(id)
 );
+
+
+
 
 
 INSERT INTO roles (name, seller, buyer) VALUES
 ('ROLE_ADD_BOOK', 1, 0),
 ('ROLE_DELETE_BOOK', 1, 0),
-('ROLE_UPDATE_BOOK', 1, 0);
+('ROLE_UPDATE_BOOK', 1, 0),
+('ROLE_SEARCH_BOOK', 1, 1);
+
 
 INSERT INTO seller(name, phone, password, balance) VALUES ('Hegel', '0551234567', '1234', 0);
 INSERT INTO seller(name, phone, password, balance) VALUES ('Spinosa', '0518913254', '12345', 0);
@@ -71,6 +84,7 @@ INSERT INTO seller_roles (seller_id, role_id) VALUES
 (2, 1),
 (2, 2),
 (2, 3);
+
 
 
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Java Basics', 'Alice', 78, 208, 1);
@@ -96,11 +110,19 @@ INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Kubernetes Gui
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES ('Design Patterns', 'Jack', 88, 390, 2);
 
 
-INSERT INTO buyer(name, phone, email) VALUES
-('Buyer1', '0501111111', 'buyer1@example.com'),
-('Buyer2', '0502222222', 'buyer2@example.com'),
-('Buyer3', '0503333333', 'buyer3@example.com'),
-('Buyer4', '0504444444', 'buyer4@example.com'),
-('Buyer5', '0501111112', 'buyer5@example.com');
+INSERT INTO buyer(name, phone, email, password) VALUES
+('Buyer1', '0501111111', 'buyer1@example.com', '1234'),
+('Buyer2', '0502222222', 'buyer2@example.com', '12345'),
+('Buyer3', '0503333333', 'buyer3@example.com', '123456'),
+('Buyer4', '0504444444', 'buyer4@example.com', '1234567'),
+('Buyer5', '0501111112', 'buyer5@example.com', '12345678');
+
+INSERT INTO buyer_roles (buyer_id, role_id) VALUES
+(1, 4),
+(2, 4),
+(3, 4),
+(4, 4),
+(5, 4);
+
 
 UPDATE buyer SET balance = 10000 WHERE balance IS NULL;

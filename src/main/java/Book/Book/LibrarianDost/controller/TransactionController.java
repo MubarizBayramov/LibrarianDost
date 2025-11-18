@@ -10,7 +10,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/buyers")
 @RequiredArgsConstructor
-public class TransactionController {
+public class
+TransactionController {
 
     private final TransactionService transactionService;
 
