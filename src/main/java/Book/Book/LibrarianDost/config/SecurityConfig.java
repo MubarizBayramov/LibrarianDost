@@ -51,12 +51,12 @@ public class SecurityConfig {
 
             Seller seller = sellerRepository.findByName(username).orElse(null);
             if (seller != null) {
-                return seller; // Seller login oldu
+                return seller;
             }
 
             Buyer buyer = buyerRepository.findByName(username).orElse(null);
             if (buyer != null) {
-                return buyer; // Buyer login oldu
+                return buyer;
             }
 
             throw new UsernameNotFoundException("User not found");

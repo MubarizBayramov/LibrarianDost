@@ -46,19 +46,19 @@ CREATE TABLE buyer_book (
     CONSTRAINT fk_buyer_book_book FOREIGN KEY (book_id) REFERENCES book(id)
 );
 
--- Rolları əlavə edirik
+
 INSERT INTO roles (name, seller, buyer) VALUES
 ('ROLE_ADD_BOOK', 1, 0),
 ('ROLE_DELETE_BOOK', 1, 0),
 ('ROLE_UPDATE_BOOK', 1, 0),
 ('ROLE_SEARCH_BOOK', 1, 1);
 
--- Seller-ləri əlavə edirik
+
 INSERT INTO seller(name, phone, password, balance) VALUES
 ('Hegel', '0551234567', '1234', 0),
 ('Spinosa', '0518913254', '12345', 0);
 
--- Kitabları əlavə edirik (hər seller üçün)
+
 INSERT INTO book(name, author, amount, stock, seller_id) VALUES
 ('Java Basics', 'Alice', 78, 208, 1),
 ('Spring Intro', 'Bob', 52, 241, 1),
@@ -81,7 +81,7 @@ INSERT INTO book(name, author, amount, stock, seller_id) VALUES
 ('Kubernetes Guide', 'Ivy', 149, 389, 2),
 ('Design Patterns', 'Jack', 88, 390, 2);
 
--- Buyer-ləri əlavə edirik
+
 INSERT INTO buyer(name, phone, email, password) VALUES
 ('Buyer1', '0501111111', 'buyer1@example.com', '1234'),
 ('Buyer2', '0502222222', 'buyer2@example.com', '12345'),

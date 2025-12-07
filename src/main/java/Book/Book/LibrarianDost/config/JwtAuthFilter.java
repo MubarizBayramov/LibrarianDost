@@ -1,6 +1,7 @@
 package Book.Book.LibrarianDost.config;
 
 import Book.Book.LibrarianDost.repository.SellerRepository;
+import Book.Book.LibrarianDost.repository.BuyerRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final SellerRepository sellerRepository;
+    private final BuyerRepository buyerRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -42,16 +44,29 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String username = jwtService.extractUsername(token);
-        var seller = sellerRepository.findByName(username);
 
-        if (seller.isPresent() && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = new User(username, seller.get().getPassword(), Collections.emptyList());
-            UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authToken);
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+
+            var seller = sellerRepository.findByName(username);
+            if (seller.isPresent()) {
+                User user = new User(username, seller.get().getPassword(), Collections.emptyList());
+                setAuthentication(user, request);
+            } else {
+                var buyer = buyerRepository.findByName(username);
+                if (buyer.isPresent()) {
+                    User user = new User(username, buyer.get().getPassword(), Collections.emptyList());
+                    setAuthentication(user, request);
+                }
+            }
         }
 
         chain.doFilter(request, response);
+    }
+
+    private void setAuthentication(User user, HttpServletRequest request) {
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authToken);
     }
 }

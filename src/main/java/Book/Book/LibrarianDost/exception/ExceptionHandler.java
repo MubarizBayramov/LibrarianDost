@@ -10,7 +10,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class ExceptionHandler {
 
-    // Validation xətaları üçün
+
     @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidation(MethodArgumentNotValidException e) {
         Map<String, String> response = new HashMap<>();
@@ -18,7 +18,7 @@ public class ExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
-    // BookException üçün
+
     @org.springframework.web.bind.annotation.ExceptionHandler(BookException.class)
     public ResponseEntity<Map<String, String>> handleBookException(BookException e) {
         Map<String, String> response = new HashMap<>();
@@ -26,7 +26,7 @@ public class ExceptionHandler {
         return ResponseEntity.status(e.getStatus()).body(response);
     }
 
-    // Digər exception-lar üçün optional
+
     @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleOtherExceptions(Exception e) {
         Map<String, String> response = new HashMap<>();

@@ -41,3 +41,7 @@
 2025-12-07 12:37:54 [http-nio-8881-exec-2] INFO  B.B.L.config.TransactionAspect - Buyer ID validated: 1
 2025-12-07 12:37:55 [http-nio-8881-exec-2] INFO  B.B.L.config.TransactionAspect - Purchase completed. Response: [BookBuyResponse(message=Book purchased successfully! Transaction: 05bbe082-1ee2-4f9e-84e2-e418d88e135f, bookName=Java Basics, quantity=1)]
 2025-12-07 12:37:55 [http-nio-8881-exec-2] INFO  B.B.L.config.TransactionAspect - List Book.Book.LibrarianDost.service.TransactionService.buyBooks(Long,List) executed in 560 ms
+2025-12-07 12:39:53 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-07 12:39:53 [SpringApplicationShutdownHook] WARN  o.s.b.f.s.DisposableBeanAdapter - Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2025-12-07 12:39:53 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-12-07 12:39:53 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
