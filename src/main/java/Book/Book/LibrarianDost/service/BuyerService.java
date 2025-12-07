@@ -45,7 +45,6 @@ public class BuyerService {
         } else {
             books = bookRepository.findAll();
         }
-
         return books.stream()
                 .map(book -> new BookResponse(
                         book.getId(),

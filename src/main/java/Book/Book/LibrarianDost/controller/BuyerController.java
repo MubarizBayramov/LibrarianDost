@@ -26,15 +26,11 @@ public class BuyerController {
 
     @PreAuthorize("hasRole('ROLE_SEARCH_BOOK')")
     @GetMapping("/search")
-
     public List<BookResponse> searchBooks(@RequestParam(required = false) String name,
                                           @RequestParam(required = false) Double minAmount,
                                           @RequestParam(required = false) Double maxAmount,
                                           @RequestParam(required = false) String sellerName) {
         return buyerService.searchBooks(name, minAmount, maxAmount, sellerName);
     }
-
-
-
 
 }

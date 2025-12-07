@@ -17,6 +17,8 @@ public class AuthController {
     private final AuthService authService;
 
 
+
+
     @PostMapping("/register/seller")
     public String register(@RequestBody SellerRegisterRequest request) {
         return authService.register(request);
