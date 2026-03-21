@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/sellers")
+
 public class SellerController {
 
     private final SellerService sellerService;

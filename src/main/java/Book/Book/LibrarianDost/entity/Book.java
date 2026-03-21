@@ -27,8 +27,8 @@ public class Book {
     private Seller seller;
 
 
-    public Book() {}
-
+    public Book() {
+    }
 
     public Book(Long id, String name, String author, Double amount, Integer stock, Seller seller) {
         this.id = id;

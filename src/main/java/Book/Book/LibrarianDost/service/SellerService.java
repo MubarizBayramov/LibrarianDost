@@ -69,13 +69,9 @@ public class SellerService {
     public void deleteBook(Long sellerId, Long bookId, Integer quantity, String confirm) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new BookException("Book not found", HttpStatus.NOT_FOUND));
-
-
         if (!book.getSeller().getId().equals(sellerId)) {
             throw new BookException("This book does not belong to this seller", HttpStatus.FORBIDDEN);
         }
-
-
         if (confirm == null || !confirm.equalsIgnoreCase("yes")) {
             List<Book> books = bookRepository.findBySellerId(sellerId);
             String bookList = books.stream()
@@ -92,18 +88,14 @@ public class SellerService {
             if (book.getStock() < quantity) {
                 throw new BookException("Delete quantity is greater than current stock", HttpStatus.BAD_REQUEST);
             }
-
             book.setStock(book.getStock() - quantity);
-
-
             if (book.getStock() == 0) {
                 bookRepository.delete(book);
             } else {
                 bookRepository.save(book);
             }
         } else {
-
-            bookRepository.delete(book);
+        bookRepository.delete(book);
         }
     }
 

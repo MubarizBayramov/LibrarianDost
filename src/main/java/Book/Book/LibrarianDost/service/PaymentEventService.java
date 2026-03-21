@@ -44,7 +44,10 @@ public class PaymentEventService implements PaymentService {
     public List<PaymentResponse> getAllPayments(double amount) {
         jmsTemplate.convertAndSend("getAll-queue", new RefundMessage("N/A", amount));
         return new ArrayList<>();
-    }
-}
 
-*/
+
+
+
+
+
+ */
