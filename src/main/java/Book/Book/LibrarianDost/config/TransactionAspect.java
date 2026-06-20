@@ -1,7 +1,7 @@
 package Book.Book.LibrarianDost.config;
 
 
-import Book.Book.LibrarianDost.exception.BookException;
+import Book.Book.LibrarianDost.exception.MyException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -18,7 +18,7 @@ public class TransactionAspect {
     @Before("execution(* Book.Book.LibrarianDost.service.TransactionService.*(..)) && args(buyerId,..)")
     public void validateBuyerId(Long buyerId) {
         if (buyerId == null || buyerId <= 0) {
-            throw new BookException("Invalid buyer ID: " + buyerId);
+            throw new MyException("Invalid buyer ID: " + buyerId);
         }
         log.info("Buyer ID validated: {}", buyerId);
     }

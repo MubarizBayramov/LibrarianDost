@@ -6,18 +6,18 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @Data
-public class BookException extends RuntimeException {
+public class MyException extends RuntimeException {
 
     private final HttpStatus status;
 
 
-    public BookException(String message) {
+    public MyException(String message) {
         super(message);
         this.status = HttpStatus.BAD_REQUEST;
     }
 
 
-    public BookException(String message, HttpStatus status) {
+    public MyException(String message, HttpStatus status) {
         super(message);
         this.status = status;
     }

@@ -2,7 +2,7 @@ package Book.Book.LibrarianDost.service;
 
 import Book.Book.LibrarianDost.entity.Book;
 import Book.Book.LibrarianDost.entity.Seller;
-import Book.Book.LibrarianDost.exception.BookException;
+import Book.Book.LibrarianDost.exception.MyException;
 import Book.Book.LibrarianDost.repository.BookRepository;
 import Book.Book.LibrarianDost.repository.SellerRepository;
 import Book.Book.LibrarianDost.request.BookAddRequest;
@@ -26,14 +26,15 @@ public class SellerService {
 
     public List<Book> getSellerBooks(Long sellerId) {
         Seller seller = sellerRepository.findById(sellerId)
-                .orElseThrow(() -> new BookException("Seller not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new MyException("Seller not found", HttpStatus.NOT_FOUND));
         return seller.getBooks();
     }
 
 
+
     public Book addBookToSeller(Long sellerId, BookAddRequest request) {
         Seller seller = sellerRepository.findById(sellerId)
-                .orElseThrow(() -> new BookException("Seller not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new MyException("Seller not found", HttpStatus.NOT_FOUND));
 
         Book book = new Book();
         book.setName(request.getName());
@@ -49,9 +50,9 @@ public class SellerService {
 
     public Book updateBook(Long sellerId, Long bookId, BookUpdateRequest updatedBook) {
         Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new BookException("Book not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new MyException("Book not found", HttpStatus.NOT_FOUND));
         if (!book.getSeller().getId().equals(sellerId)) {
-            throw new BookException("This book does not belong to this seller", HttpStatus.FORBIDDEN);
+            throw new MyException("This book does not belong to this seller", HttpStatus.FORBIDDEN);
         }
         book.setName(updatedBook.getName());
         book.setAuthor(updatedBook.getAuthor());
@@ -59,7 +60,7 @@ public class SellerService {
        if (updatedBook.getStock() != null && updatedBook.getStock() > 0) {
             book.setStock(updatedBook.getStock());
         } else if (updatedBook.getStock() != null) {
-            throw new BookException("Stock must be greater than 0", HttpStatus.BAD_REQUEST);
+            throw new MyException("Stock must be greater than 0", HttpStatus.BAD_REQUEST);
         }
         return bookRepository.save(book);
     }
@@ -68,16 +69,16 @@ public class SellerService {
 
     public void deleteBook(Long sellerId, Long bookId, Integer quantity, String confirm) {
         Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new BookException("Book not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new MyException("Book not found", HttpStatus.NOT_FOUND));
         if (!book.getSeller().getId().equals(sellerId)) {
-            throw new BookException("This book does not belong to this seller", HttpStatus.FORBIDDEN);
+            throw new MyException("This book does not belong to this seller", HttpStatus.FORBIDDEN);
         }
         if (confirm == null || !confirm.equalsIgnoreCase("yes")) {
             List<Book> books = bookRepository.findBySellerId(sellerId);
             String bookList = books.stream()
                     .map(b -> b.getId() + " - " + b.getName() + " (Stock: " + b.getStock() + ")")
                     .reduce("", (a, b) -> a + "\n" + b);
-            throw new BookException(
+            throw new MyException(
                     "Book deletion cancelled. To delete, set confirm=yes. Your books:\n" + bookList,
                     HttpStatus.BAD_REQUEST
             );
@@ -86,7 +87,7 @@ public class SellerService {
 
         if (quantity != null && quantity > 0) {
             if (book.getStock() < quantity) {
-                throw new BookException("Delete quantity is greater than current stock", HttpStatus.BAD_REQUEST);
+                throw new MyException("Delete quantity is greater than current stock", HttpStatus.BAD_REQUEST);
             }
             book.setStock(book.getStock() - quantity);
             if (book.getStock() == 0) {

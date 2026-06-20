@@ -2,7 +2,7 @@ package Book.Book.LibrarianDost.service;
 
 import Book.Book.LibrarianDost.entity.Book;
 import Book.Book.LibrarianDost.entity.Seller;
-import Book.Book.LibrarianDost.exception.BookException;
+import Book.Book.LibrarianDost.exception.MyException;
 import Book.Book.LibrarianDost.repository.BookRepository;
 import Book.Book.LibrarianDost.repository.SellerRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,7 +76,7 @@ class SellerServiceGetBooksTest {
     void testGetSellerBooks_SellerNotFound() {
         when(sellerRepository.findById(2L)).thenReturn(Optional.empty());
 
-        BookException exception = assertThrows(BookException.class, () -> {
+        MyException exception = assertThrows(MyException.class, () -> {
             sellerService.getSellerBooks(2L);
         });
 
@@ -133,7 +133,7 @@ class SellerServiceGetBooksTest {
             when(bookRepository.findById(101L)).thenReturn(Optional.of(book1));
             when(bookRepository.findBySellerId(1L)).thenReturn(sellerBooks);
 
-            BookException exception = assertThrows(BookException.class, () -> {
+            MyException exception = assertThrows(MyException.class, () -> {
                 sellerService.deleteBook(1L, 101L, null, null);
             });
 

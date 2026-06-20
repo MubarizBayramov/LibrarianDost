@@ -6,7 +6,7 @@ import Book.Book.LibrarianDost.entity.Book;
 import Book.Book.LibrarianDost.entity.Buyer;
 import Book.Book.LibrarianDost.entity.BuyerBook;
 import Book.Book.LibrarianDost.entity.Seller;
-import Book.Book.LibrarianDost.exception.BookException;
+import Book.Book.LibrarianDost.exception.MyException;
 import Book.Book.LibrarianDost.repository.BookRepository;
 import Book.Book.LibrarianDost.repository.BuyerBookRepository;
 import Book.Book.LibrarianDost.repository.BuyerRepository;
@@ -32,25 +32,25 @@ public class TransactionService {
     @Transactional
     public List<BookBuyResponse> buyBooks(Long buyerId, List<Long> bookIds) {
         Buyer buyer = buyerRepository.findById(buyerId)
-                .orElseThrow(() -> new BookException("Buyer not found"));
+                .orElseThrow(() -> new MyException("Buyer not found"));
 
         List<BookBuyResponse> responses = new ArrayList<>();
 
 
         for (Long bookId : bookIds) {
             Book book = bookRepository.findById(bookId)
-                    .orElseThrow(() -> new BookException("Book not found: " + bookId));
+                    .orElseThrow(() -> new MyException("Book not found: " + bookId));
 
             Seller seller = book.getSeller();
 
             if (book.getStock() < 1) {
-                throw new BookException("Book is out of stock: " + book.getName());
+                throw new MyException("Book is out of stock: " + book.getName());
             }
 
             double totalAmount = book.getAmount();
 
             if (buyer.getBalance() < totalAmount) {
-                throw new BookException("Insufficient balance for book: " + book.getName());
+                throw new MyException("Insufficient balance for book: " + book.getName());
             }
 
             PaymentRequest paymentRequest = new PaymentRequest();
@@ -59,7 +59,7 @@ public class TransactionService {
 
             PaymentResponse paymentResponse = paymentService.makePayment(paymentRequest);
             if (paymentResponse == null || paymentResponse.getTransactionCode() == null) {
-                throw new BookException("Payment failed for book: " + book.getName());
+                throw new MyException("Payment failed for book: " + book.getName());
             }
 
 
@@ -98,7 +98,7 @@ public class TransactionService {
         for (String transactionCode : transactionCodes) {
             BuyerBook buyerBook = buyerBookRepository
                     .findByBuyerIdAndTransactionCode(buyerId, transactionCode)
-                    .orElseThrow(() -> new BookException("Invalid transaction code: " + transactionCode));
+                    .orElseThrow(() -> new MyException("Invalid transaction code: " + transactionCode));
 
             Buyer buyer = buyerBook.getBuyer();
             Book book = buyerBook.getBook();
@@ -108,7 +108,7 @@ public class TransactionService {
 
             PaymentResponse refundResponse = paymentService.refundPayment(transactionCode, totalAmount);
             if (refundResponse == null || refundResponse.getTransactionCode() == null) {
-                throw new BookException("Refund failed for book: " + book.getName());
+                throw new MyException("Refund failed for book: " + book.getName());
             }
 
 

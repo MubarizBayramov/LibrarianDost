@@ -3,7 +3,7 @@ package Book.Book.LibrarianDost.service;
 import Book.Book.LibrarianDost.entity.Book;
 import Book.Book.LibrarianDost.entity.Buyer;
 import Book.Book.LibrarianDost.entity.Seller;
-import Book.Book.LibrarianDost.exception.BookException;
+import Book.Book.LibrarianDost.exception.MyException;
 import Book.Book.LibrarianDost.repository.BookRepository;
 import Book.Book.LibrarianDost.repository.BuyerBookRepository;
 import Book.Book.LibrarianDost.repository.BuyerRepository;
@@ -97,7 +97,7 @@ class TransactionServiceTest {
     void testBuyBooks_BuyerNotFound() {
         when(buyerRepository.findById(999L)).thenReturn(Optional.empty());
 
-        BookException ex = assertThrows(BookException.class,
+        MyException ex = assertThrows(MyException.class,
                 () -> transactionService.buyBooks(999L, List.of(1L)));
 
         assertEquals("Buyer not found", ex.getMessage());

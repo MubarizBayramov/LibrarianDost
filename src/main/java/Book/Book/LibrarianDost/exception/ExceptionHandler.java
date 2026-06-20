@@ -19,8 +19,8 @@ public class ExceptionHandler {
     }
 
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(BookException.class)
-    public ResponseEntity<Map<String, String>> handleBookException(BookException e) {
+    @org.springframework.web.bind.annotation.ExceptionHandler(MyException.class)
+    public ResponseEntity<Map<String, String>> handleMyException(MyException e) {
         Map<String, String> response = new HashMap<>();
         response.put("error", e.getMessage());
         return ResponseEntity.status(e.getStatus()).body(response);

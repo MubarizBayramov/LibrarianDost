@@ -20,7 +20,6 @@ public class Buyer implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private String phone;
     private String email;
@@ -39,7 +38,7 @@ public class Buyer implements UserDetails {
     )
     private Set<Role> roles = new HashSet<>();
 
-    // ---------------- UserDetails implementasiyası ----------------
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
